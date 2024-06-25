@@ -2,7 +2,6 @@
 """
 create 0-pascal_triangle.py
 """
-
 def pascal_triangle(n):
     """
     Returns a list of integers
