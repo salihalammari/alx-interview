@@ -19,5 +19,4 @@ def canUnlockAll(boxes):
                 break
         if not found_key:
             return False
-    
     return True
