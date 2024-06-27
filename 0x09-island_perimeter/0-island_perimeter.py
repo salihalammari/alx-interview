@@ -3,6 +3,7 @@
 Module for calculating the perimeter of an island in a grid.
 """
 
+
 def island_perimeter(grid):
     """
     Returns the perimeter of the island described in grid.
@@ -33,5 +34,4 @@ def island_perimeter(grid):
                 # Check right edge
                 if j == cols - 1 or grid[i][j + 1] == 0:
                     perimeter += 1
-
     return perimeter
