@@ -15,7 +15,7 @@ def island_perimeter(grid):
         int: the perimeter of the island
     """
     rows = len(grid)
-    cols = len(grid[0]) if rows > 0 else 0  # Ensure cols is valid even if grid is empty
+    cols = len(grid[0]) if rows > 0 else 0
 
     perimeter = 0
 
