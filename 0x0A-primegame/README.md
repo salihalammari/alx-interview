@@ -1,0 +1,1 @@
+To solve this problem, we need to determine the winner of each round of the game where Maria and Ben alternately choose prime numbers from a set of integers starting from 1 up to 𝑛. The player who cannot make a move loses the game. Maria always starts first.
