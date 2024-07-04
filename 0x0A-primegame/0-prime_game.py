@@ -2,68 +2,43 @@
 """Module defining isWinner function."""
 
 
-def sieve_of_eratosthenes(max_num):
-    """ Return a list of primes up to max_num (inclusive) """
-    sieve = [True] * (max_num + 1)
-    sieve[0] = sieve[1] = False  # 0 and 1 are not primes
-    p = 2
-    while (p * p <= max_num):
-        if (sieve[p] == True):
-            # Updating all multiples of p to not prime
-            for i in range(p * p, max_num + 1, p):
-                sieve[i] = False
-        p += 1
-    primes = []
-    for p in range(max_num + 1):
-        if sieve[p]:
-            primes.append(p)
-    return primes
-
-
 def isWinner(x, nums):
-    """Function to determine the winner of the prime game."""
-    max_n = max(nums)
-    primes = sieve_of_eratosthenes(max_n)
-    
-    maria_wins_count = 0
-    ben_wins_count = 0
-    
-    for n in nums:
-        if n == 1:
-            ben_wins_count += 1
+    """Function to get who has won in prime game"""
+    mariaWinsCount = 0
+    benWinsCount = 0
+
+    for num in nums:
+        roundsSet = list(range(1, num + 1))
+        primesSet = primes_in_range(1, num)
+
+        if not primesSet:
+            benWinsCount += 1
             continue
-        
-        rounds_set = list(range(1, n + 1))
-        is_maria_turn = True
-        
-        while True:
-            if not any(rounds_set):
-                if is_maria_turn:
-                    ben_wins_count += 1
+
+        isMariaTurns = True
+
+        while(True):
+            if not primesSet:
+                if isMariaTurns:
+                    benWinsCount += 1
                 else:
-                    maria_wins_count += 1
+                    mariaWinsCount += 1
                 break
-            
-            available_primes = [p for p in primes if p in rounds_set]
-            
-            if not available_primes:
-                if is_maria_turn:
-                    ben_wins_count += 1
-                else:
-                    maria_wins_count += 1
-                break
-            
-            chosen_prime = available_primes[0]
-            rounds_set = [x for x in rounds_set if x % chosen_prime != 0]
-            
-            is_maria_turn = not is_maria_turn
-    
-    if maria_wins_count > ben_wins_count:
+
+            smallestPrime = primesSet.pop(0)
+            roundsSet.remove(smallestPrime)
+
+            roundsSet = [x for x in roundsSet if x % smallestPrime != 0]
+
+            isMariaTurns = not isMariaTurns
+
+    if mariaWinsCount > benWinsCount:
         return "Winner: Maria"
-    elif ben_wins_count > maria_wins_count:
+
+    if mariaWinsCount < benWinsCount:
         return "Winner: Ben"
-    else:
-        return None
+
+    return None
 
 
 def is_prime(n):
