@@ -2,28 +2,38 @@
 """2D matrix rotation module.
 """
 
-
 def rotate_2d_matrix(matrix):
     """Rotates an m by n 2D matrix in place.
     """
-    if type(matrix) != list:
+    if not isinstance(matrix, list):
         return
-    if len(matrix) <= 0:
-        return
-    if not all(map(lambda x: type(x) == list, matrix)):
-        return
+    
     rows = len(matrix)
-    cols = len(matrix[0])
-    if not all(map(lambda x: len(x) == cols, matrix)):
+    if rows == 0:
         return
-    c, r = 0, rows - 1
-    for i in range(cols * rows):
-        if i % rows == 0:
-            matrix.append([])
-        if r == -1:
-            r = rows - 1
-            c += 1
-        matrix[-1].append(matrix[r][c])
-        if c == cols - 1 and r >= -1:
-            matrix.pop(r)
-        r -= 1
+    
+    cols = len(matrix[0])
+    if not all(isinstance(row, list) and len(row) == cols for row in matrix):
+        return
+    
+    # Perform matrix rotation
+    for layer in range(rows // 2):
+        first = layer
+        last = rows - 1 - layer
+        for i in range(first, last):
+            offset = i - first
+            top = matrix[first][i]
+            
+            # left -> top
+            matrix[first][i] = matrix[last - offset][first]
+            
+            # bottom -> left
+            matrix[last - offset][first] = matrix[last][last - offset]
+            
+            # right -> bottom
+            matrix[last][last - offset] = matrix[i][last]
+            
+            # top -> right
+            matrix[i][last] = top
+    
+    return matrix
