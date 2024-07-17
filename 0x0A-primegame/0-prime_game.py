@@ -1,57 +1,29 @@
 #!/usr/bin/python3
-"""Module for Prime Game"""
+"""2D matrix rotation module.
+"""
 
 
-def is_prime(n):
-    """Check if a number is prime."""
-    if n < 2:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
-def simulate_round(nums):
-    """Simulate one round of the game."""
-    # Check if the first number is prime
-    if is_prime(nums[0]):
-        # Maria starts with an advantage
-        while len(nums) > 1:
-            prime_num = next((num for num in nums if is_prime(num)), None)
-            if prime_num is None:
-                break
-            nums.remove(prime_num)
-            nums = [num for num in nums if num % prime_num != 0]
-    else:
-        # Ben starts with an advantage
-        while len(nums) > 1:
-            prime_num = next((num for num in nums if is_prime(num)), None)
-            if prime_num is None:
-                break
-            nums.remove(prime_num)
-            nums = [num for num in nums if num % prime_num != 0]
-
-    # Determine the winner of the round
-    if len(nums) == 1:
-        return "Maria" if is_prime(nums[0]) else "Ben"
-    else:
-        return None
-
-def isWinner(x, nums):
-    """Determine the winner of the game."""
-    maria_wins = 0
-    ben_wins = 0
-
-    for _ in range(x):
-        result = simulate_round(nums[:])
-        if result == "Maria":
-            maria_wins += 1
-        elif result == "Ben":
-            ben_wins += 1
-
-    if maria_wins > ben_wins:
-        return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
-    else:
-        return None
+def rotate_2d_matrix(matrix):
+    """Rotates an m by n 2D matrix in place.
+    """
+    if type(matrix) != list:
+        return
+    if len(matrix) <= 0:
+        return
+    if not all(map(lambda x: type(x) == list, matrix)):
+        return
+    rows = len(matrix)
+    cols = len(matrix[0])
+    if not all(map(lambda x: len(x) == cols, matrix)):
+        return
+    c, r = 0, rows - 1
+    for i in range(cols * rows):
+        if i % rows == 0:
+            matrix.append([])
+        if r == -1:
+            r = rows - 1
+            c += 1
+        matrix[-1].append(matrix[r][c])
+        if c == cols - 1 and r >= -1:
+            matrix.pop(r)
+        r -= 1
